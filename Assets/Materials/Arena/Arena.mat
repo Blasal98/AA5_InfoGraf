@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Arena
-  m_Shader: {fileID: 4800000, guid: 1797333870fdef948b4a38e6e59759f1, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9a4fdb0506ab9be4e8d6f2c7a3f6dd9e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -28,9 +28,14 @@ Material:
     - _ambientInt: 0.25
     - _diffuseInt: 1
     - _directionalLightIntensity: 1
+    - _distributionRoughness: 0.0001
+    - _fresnelIntensity: 1
     - _metallicSample: 0.1
+    - _pointLightIntensity: 1
     m_Colors:
     - _ambientColor: {r: 0.94509804, g: 0.76862746, b: 0.4862745, a: 1}
     - _directionalLightColor: {r: 1, g: 1, b: 1, a: 0}
     - _directionalLightDir: {r: -44, g: 22, b: -38, a: 0}
+    - _pointLightColor: {r: 0, g: 0, b: 0, a: 1}
+    - _pointLightPos: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

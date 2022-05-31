@@ -112,7 +112,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Roughness: 0.983
+    - _Roughness: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -120,16 +120,22 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _ambientInt: 1
+    - _ambientInt: 0.1
     - _diffuseInt: 1
     - _directionalLightIntensity: 1
+    - _distributionRoughness: 0.0001
+    - _fresnelIntensity: 1
     - _metallicSample: 0.132
+    - _pointLightIntensity: 2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _ambientColor: {r: 0.1509434, g: 0.14208925, b: 0.039159846, a: 1}
+    - _ambientColor: {r: 0.8624314, g: 1, b: 0, a: 1}
     - _directionalLightColor: {r: 1, g: 1, b: 1, a: 0}
-    - _directionalLightDir: {r: -44, g: 22, b: -38, a: 0}
+    - _directionalLightDir: {r: -0, g: -0, b: -1, a: 0}
+    - _objectColor: {r: 0, g: 0, b: 0, a: 1}
+    - _pointLightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _pointLightPos: {r: 15.42, g: 10.72, b: -2.03, a: 0}
   m_BuildTextureStacks: []
