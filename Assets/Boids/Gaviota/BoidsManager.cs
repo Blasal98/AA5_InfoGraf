@@ -39,7 +39,10 @@ public class BoidsManager : MonoBehaviour
             for (int j = 0; j < gaviotaCount; j++)
             {
                 GameObject gaviota = Instantiate(gaviotaPrefab, this.transform);
-                gaviota.transform.position = new Vector3(this.transform.position.x * i * 1.1f, this.transform.position.y, this.transform.position.z * j * 1.1f);
+                gaviota.transform.position = new Vector3(
+                    this.transform.position.x + i * 2.0f, 
+                    this.transform.position.y,
+                    this.transform.position.z + j * 2.0f);
                 gaviotaList.Add(gaviota);
                 gaviotaVelocityList.Add(Vector3.zero);
             }
@@ -85,14 +88,14 @@ public class BoidsManager : MonoBehaviour
             Vector3 cohesion = shaderData[i].cohesion;
             Vector3 alignment = shaderData[i].alignment;
 
-            Vector3 acceleration = (separation * 0.6f + cohesion * 0.4f + alignment * 1.0f) * 0.5f + targetDirection * 0.5f ;
+            Vector3 acceleration = (separation * 0.6f + cohesion * 0.4f + alignment * 1.0f) * 0.2f + targetDirection * 0.8f ;
 
             gaviotaVelocityList[i] += acceleration * Time.deltaTime;
             gaviotaVelocityList[i].Normalize();
 
             gaviotaList[i].transform.position += gaviotaVelocityList[i] * Time.deltaTime;
             shaderData[i].position = gaviotaList[i].transform.position;
-            //gaviotaList[i].transform.LookAt(gaviotaList[i].transform.position + gaviotaVelocityList[i]);
+            gaviotaList[i].transform.LookAt(gaviotaList[i].transform.position + gaviotaVelocityList[i]);
 
             
         }
