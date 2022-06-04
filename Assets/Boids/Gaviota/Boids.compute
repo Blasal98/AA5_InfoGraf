@@ -22,7 +22,10 @@ RWStructuredBuffer<GameObjInf> BoidsResult;
 int boidCount;
 
 float dist = 0;
-int neighboursCount = 0;
+
+int separationCount = 0;
+int cohesionCount = 0;
+
 float3 averageSeparation = float3(0, 0, 0);
 float3 averagePosition = float3(0, 0, 0);
 
@@ -32,20 +35,29 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 {
     for (int i = 0; i < boidCount; i++) {
 
-        dist = distance(BoidsResult[id.x].Position, BoidsResult[i].Position);
-        if (dist < 20) {
-            neighboursCount++;
+        dist = abs(distance(BoidsResult[id.x].Position, BoidsResult[i].Position));
+
+        if (dist >= 0 && dist < 1) {
+            separationCount++;
             averageSeparation = averageSeparation + BoidsResult[id.x].Position - BoidsResult[i].Position;
+        }
+        
+        if (dist >= 1 && dist < 20) {
+            cohesionCount++;
             averagePosition = averagePosition + BoidsResult[i].Position;
         }
     }
 
-    averageSeparation = averageSeparation / neighboursCount;
-    normalize(averageSeparation);
+    if (separationCount > 0) {
+        averageSeparation = averageSeparation / separationCount;
+        normalize(averageSeparation);
+    }
+    if (cohesionCount > 0) {
 
-    averagePosition = averagePosition / neighboursCount;
-    averagePosition = averagePosition - BoidsResult[id.x].Position;
-    normalize(averagePosition);
+        averagePosition = averagePosition / cohesionCount;
+        averagePosition = averagePosition - BoidsResult[id.x].Position;
+        normalize(averagePosition);
+    }
 
     BoidsResult[id.x].Separation = averageSeparation;
     //BoidsResult[id.x].Separation = float3(0, 0, 0);

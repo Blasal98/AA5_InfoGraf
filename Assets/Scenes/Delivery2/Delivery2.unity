@@ -309,7 +309,7 @@ MonoBehaviour:
   gaviotaPrefab: {fileID: 9115701826688551251, guid: 2b9d72e39ccb50542a4111a71ed7e77c,
     type: 3}
   gaviotaTarget: {fileID: 853141366}
-  gaviotaCount: 5
+  gaviotaCount: 8
   gaviotaList: []
   gaviotaVelocityList: []
   shader: {fileID: 7200000, guid: da455dfc203360846a8c3e245a674302, type: 3}

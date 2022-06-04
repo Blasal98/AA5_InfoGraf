@@ -88,7 +88,7 @@ public class BoidsManager : MonoBehaviour
             Vector3 cohesion = shaderData[i].cohesion;
             Vector3 alignment = shaderData[i].alignment;
 
-            Vector3 acceleration = (separation * 0.6f + cohesion * 0.4f + alignment * 1.0f) * 0.2f + targetDirection * 0.8f ;
+            Vector3 acceleration = (separation * 2 + cohesion * 2 + alignment) * 0.2f + targetDirection * 0.8f ;
 
             gaviotaVelocityList[i] += acceleration * Time.deltaTime;
             gaviotaVelocityList[i].Normalize();
