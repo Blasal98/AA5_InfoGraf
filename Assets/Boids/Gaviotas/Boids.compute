@@ -19,15 +19,41 @@ struct GameObjInf {
 
 RWStructuredBuffer<GameObjInf> BoidsResult;
 
-float deltaTime;
-float numObjs;
+int boidCount;
 
+float dist = 0;
+int neighboursCount = 0;
+float3 averageSeparation = float3(0, 0, 0);
+float3 averagePosition = float3(0, 0, 0);
+
+//los threadgroups seran de 1 dimension con 128 threads disponibles
 [numthreads(128,1,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-   
-    BoidsResult[id.x].Separation = float3(1, 0, 0);
-    BoidsResult[id.x].Alignment = float3(0, 1, 0);
-    BoidsResult[id.x].Cohesion = float3(0, 0, 1);
+    for (int i = 0; i < boidCount; i++) {
+
+        dist = distance(BoidsResult[id.x].Position, BoidsResult[i].Position);
+        if (dist < 20) {
+            neighboursCount++;
+            averageSeparation = averageSeparation + BoidsResult[id.x].Position - BoidsResult[i].Position;
+            averagePosition = averagePosition + BoidsResult[i].Position;
+        }
+    }
+
+    averageSeparation = averageSeparation / neighboursCount;
+    normalize(averageSeparation);
+
+    averagePosition = averagePosition / neighboursCount;
+    averagePosition = averagePosition - BoidsResult[id.x].Position;
+    normalize(averagePosition);
+
+    BoidsResult[id.x].Separation = averageSeparation;
+    //BoidsResult[id.x].Separation = float3(0, 0, 0);
+
+    BoidsResult[id.x].Alignment = float3(0, 0, 0);
+    //BoidsResult[id.x].Alignment = float3(0, 0, 0);
+
+    BoidsResult[id.x].Cohesion = averagePosition;
+    //BoidsResult[id.x].Cohesion = float3(0, 0, 0);
     
 }
