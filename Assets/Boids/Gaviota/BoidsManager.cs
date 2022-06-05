@@ -7,6 +7,14 @@ public class BoidsManager : MonoBehaviour
     public GameObject gaviotaPrefab;
     public GameObject gaviotaTarget;
     public int gaviotaCount = 20;
+
+    public float gaviotaMinSpeed = 1;
+    public float gaviotaMaxSpeed = 5;
+
+    public float gaviotaFlockingForce = 4;
+    public float gaviotaTargetForce = 8;
+    public float gaviotaAvoidanceForce = 20;
+
     [HideInInspector] public List<GameObject> gaviotaList;
     [HideInInspector] public List<Vector3> gaviotaVelocityList;
 
@@ -79,9 +87,9 @@ public class BoidsManager : MonoBehaviour
         //Por cada gaviota aplicaremos euler
         for(int i = 0; i < gaviotaList.Count; i++)
         {
-
+            float rayLength = 3.5f;
             Ray ray = new Ray(gaviotaList[i].transform.position, Vector3.Normalize(gaviotaVelocityList[i])); ;
-            RaycastHit[] hits = Physics.RaycastAll(ray, 1);
+            RaycastHit[] hits = Physics.RaycastAll(ray, rayLength);
 
             Vector3 mountainNormal = Vector3.zero;
             bool mountainCollision = false;
@@ -89,19 +97,20 @@ public class BoidsManager : MonoBehaviour
             {
                 if (hits[j].transform.name == "mountains")
                 {
+                    Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.red);
                     mountainNormal = hits[j].normal;
                     mountainCollision = true;
                     break;
                 }
             }
 
-            Debug.DrawRay(ray.origin, ray.direction, Color.red);
+            
 
             Vector3 acceleration = Vector3.zero;
 
             if (mountainCollision && collisionWithMountain)
             {
-                acceleration = mountainNormal * 20;
+                acceleration = /*mountainNormal * 20 + */Vector3.up * gaviotaAvoidanceForce;
             }
             else
             {
@@ -111,8 +120,8 @@ public class BoidsManager : MonoBehaviour
                 Vector3 alignment = shaderData[i].alignment;
 
                 Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
-                Vector3 flockingForce = Vector3.Normalize(separation * 20 + cohesion * 10 + alignment * 1) * 4;
-                Vector3 targetForce = targetDirection * 8;
+                Vector3 flockingForce = Vector3.Normalize(separation * 20 + cohesion * 10 + alignment * 1) * gaviotaFlockingForce;
+                Vector3 targetForce = targetDirection * gaviotaTargetForce;
 
                 acceleration = flockingForce + targetForce;
 
@@ -124,7 +133,7 @@ public class BoidsManager : MonoBehaviour
 
             gaviotaVelocityList[i] += acceleration * Time.deltaTime;
             float speed = gaviotaVelocityList[i].magnitude;
-            speed = Mathf.Clamp(speed, 1, 5);
+            speed = Mathf.Clamp(speed, gaviotaMinSpeed, gaviotaMaxSpeed);
             gaviotaVelocityList[i] = Vector3.Normalize(gaviotaVelocityList[i]) * speed;
 
             gaviotaList[i].transform.position += gaviotaVelocityList[i] * Time.deltaTime;
