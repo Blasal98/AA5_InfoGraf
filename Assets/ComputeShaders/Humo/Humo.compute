@@ -8,12 +8,17 @@ RWTexture2D<float4> Result;
 struct GameObjInf {
 
     float3 Position;
+    float Speed;
 
 };
 
 RWStructuredBuffer<GameObjInf> BoidsResult;
 
-int boidCount;
+float originX;
+float originY;
+float originZ;
+
+float maxHeight;
 
 float dist = 0;
 
@@ -22,8 +27,13 @@ float dist = 0;
 [numthreads(128, 1, 1)]
 void CSHumo(uint3 id : SV_DispatchThreadID)
 {
+    if (BoidsResult[id.x].Position.y >= originY + maxHeight) {
+        BoidsResult[id.x].Position.y = originY;
+    }
+    else if (BoidsResult[id.x].Position.y < originY + maxHeight - 3) {
 
-    BoidsResult[id.x].Position = BoidsResult[id.x].Position + float3(0, 0.01f, 0);
+    }
 
+    BoidsResult[id.x].Position.y = BoidsResult[id.x].Position.y + BoidsResult[id.x].Speed;
 
 }
