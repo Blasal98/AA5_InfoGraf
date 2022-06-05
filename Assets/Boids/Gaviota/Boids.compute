@@ -42,7 +42,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
             averageSeparation = averageSeparation + BoidsResult[id.x].Position - BoidsResult[i].Position;
         }
         
-        if (dist >= 3 && dist < 20) {
+        if (dist >= 3 && dist < 50) {
             cohesionCount++;
             averagePosition = averagePosition + BoidsResult[i].Position;
         }

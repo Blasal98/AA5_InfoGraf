@@ -86,8 +86,8 @@ public class BoidsManager : MonoBehaviour
             Vector3 alignment = shaderData[i].alignment;
 
             Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
-            Vector3 flockingForce = Vector3.Normalize(separation * 10 + cohesion * 7 + alignment * 1);
-            Vector3 targetForce = targetDirection * 4;
+            Vector3 flockingForce = Vector3.Normalize(separation * 20 + cohesion * 10 + alignment * 1) * 4;
+            Vector3 targetForce = targetDirection * 8;
 
             Vector3 acceleration = flockingForce + targetForce;
 
