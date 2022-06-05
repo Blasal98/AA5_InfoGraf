@@ -1,0 +1,29 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSHumo
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+
+struct GameObjInf {
+
+    float3 Position;
+
+};
+
+RWStructuredBuffer<GameObjInf> BoidsResult;
+
+int boidCount;
+
+float dist = 0;
+
+
+//los threadgroups seran de 1 dimension con 128 threads disponibles
+[numthreads(128, 1, 1)]
+void CSHumo(uint3 id : SV_DispatchThreadID)
+{
+
+    BoidsResult[id.x].Position = BoidsResult[id.x].Position + float3(0, 0.01f, 0);
+
+
+}
