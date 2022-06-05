@@ -14,6 +14,8 @@ public class BoidsManager : MonoBehaviour
     [HideInInspector] public ComputeBuffer shaderBuffer;
     [HideInInspector] public GameObjectInfo[] shaderData;
 
+    public bool collisionWithMountain = false;
+
     public struct GameObjectInfo
     {
         public Vector3 position;
@@ -77,19 +79,48 @@ public class BoidsManager : MonoBehaviour
         //Por cada gaviota aplicaremos euler
         for(int i = 0; i < gaviotaList.Count; i++)
         {
+
+            Ray ray = new Ray(gaviotaList[i].transform.position, Vector3.Normalize(gaviotaVelocityList[i])); ;
+            RaycastHit[] hits = Physics.RaycastAll(ray, 1);
+
+            Vector3 mountainNormal = Vector3.zero;
+            bool mountainCollision = false;
+            for (int j = 0; j < hits.Length; j++)
+            {
+                if (hits[j].transform.name == "mountains")
+                {
+                    mountainNormal = hits[j].normal;
+                    mountainCollision = true;
+                    break;
+                }
+            }
+
+            Debug.DrawRay(ray.origin, ray.direction, Color.red);
+
+            Vector3 acceleration = Vector3.zero;
+
+            if (mountainCollision && collisionWithMountain)
+            {
+                acceleration = mountainNormal * 20;
+            }
+            else
+            {
+
+                Vector3 separation = shaderData[i].separation;
+                Vector3 cohesion = shaderData[i].cohesion;
+                Vector3 alignment = shaderData[i].alignment;
+
+                Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
+                Vector3 flockingForce = Vector3.Normalize(separation * 20 + cohesion * 10 + alignment * 1) * 4;
+                Vector3 targetForce = targetDirection * 8;
+
+                acceleration = flockingForce + targetForce;
+
+            }
+
             //euler
             //vel += acc * time
             //pos += vel * time
-
-            Vector3 separation = shaderData[i].separation;
-            Vector3 cohesion = shaderData[i].cohesion;
-            Vector3 alignment = shaderData[i].alignment;
-
-            Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
-            Vector3 flockingForce = Vector3.Normalize(separation * 20 + cohesion * 10 + alignment * 1) * 4;
-            Vector3 targetForce = targetDirection * 8;
-
-            Vector3 acceleration = flockingForce + targetForce;
 
             gaviotaVelocityList[i] += acceleration * Time.deltaTime;
             float speed = gaviotaVelocityList[i].magnitude;

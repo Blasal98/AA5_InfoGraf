@@ -313,6 +313,7 @@ MonoBehaviour:
   gaviotaList: []
   gaviotaVelocityList: []
   shader: {fileID: 7200000, guid: da455dfc203360846a8c3e245a674302, type: 3}
+  collisionWithMountain: 0
 --- !u!4 &39667458
 Transform:
   m_ObjectHideFlags: 0
@@ -3024,7 +3025,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853141366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.4, y: 13, z: 21.88}
+  m_LocalPosition: {x: -10.39, y: 10.11, z: 23.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5322,6 +5323,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1397742099}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1414825992 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: cf6ec673cfae04e7e889b7ff773a64d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1557644318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1414825993
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414825992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: cf6ec673cfae04e7e889b7ff773a64d8, type: 3}
 --- !u!1001 &1415305831
 PrefabInstance:
   m_ObjectHideFlags: 0
