@@ -17,9 +17,7 @@ public class BoidsManager : MonoBehaviour
     public struct GameObjectInfo
     {
         public Vector3 position;
-
         public Vector3 velocity;
-        public float speed;
 
         public Vector3 separation;
         public Vector3 cohesion;
@@ -28,7 +26,7 @@ public class BoidsManager : MonoBehaviour
         public static int GetStructSize()
         {
             //Los vec3 son 3 floats, pues neceistamos el total de floats en la struct
-            return sizeof(float) * 16;
+            return sizeof(float) * 15;
         }
     }
 
@@ -54,6 +52,7 @@ public class BoidsManager : MonoBehaviour
         for (int i = 0; i < gaviotaList.Count; i++)
         {
             shaderData[i].position = gaviotaList[i].transform.position;
+            shaderData[i].velocity = Vector3.zero;
             gaviotaVelocityList[i] = Vector3.zero;
         }
 
@@ -82,22 +81,28 @@ public class BoidsManager : MonoBehaviour
             //vel += acc * time
             //pos += vel * time
 
-            Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
-
             Vector3 separation = shaderData[i].separation;
             Vector3 cohesion = shaderData[i].cohesion;
             Vector3 alignment = shaderData[i].alignment;
 
-            Vector3 acceleration = (separation * 2 + cohesion * 2 + alignment) * 0.2f + targetDirection * 0.8f ;
+            Vector3 targetDirection = Vector3.Normalize(gaviotaTarget.transform.position - gaviotaList[i].transform.position);
+            Vector3 flockingForce = Vector3.Normalize(separation * 10 + cohesion * 7 + alignment * 1);
+            Vector3 targetForce = targetDirection * 4;
+
+            Vector3 acceleration = flockingForce + targetForce;
 
             gaviotaVelocityList[i] += acceleration * Time.deltaTime;
-            gaviotaVelocityList[i].Normalize();
+            float speed = gaviotaVelocityList[i].magnitude;
+            speed = Mathf.Clamp(speed, 1, 5);
+            gaviotaVelocityList[i] = Vector3.Normalize(gaviotaVelocityList[i]) * speed;
 
             gaviotaList[i].transform.position += gaviotaVelocityList[i] * Time.deltaTime;
+
             shaderData[i].position = gaviotaList[i].transform.position;
+            shaderData[i].velocity = gaviotaVelocityList[i];
+
             gaviotaList[i].transform.LookAt(gaviotaList[i].transform.position + gaviotaVelocityList[i]);
 
-            
         }
 
         shaderBuffer.SetData(shaderData);

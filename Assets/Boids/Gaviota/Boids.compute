@@ -8,9 +8,7 @@ RWTexture2D<float4> Result;
 struct GameObjInf {
 
     float3 Position;
-
     float3 Velocity;
-    float Speed;
 
     float3 Separation;
     float3 Alignment;
@@ -25,9 +23,11 @@ float dist = 0;
 
 int separationCount = 0;
 int cohesionCount = 0;
+int alignmentCount = 0;
 
 float3 averageSeparation = float3(0, 0, 0);
 float3 averagePosition = float3(0, 0, 0);
+float3 averageVelocity = float3(0, 0, 0);
 
 //los threadgroups seran de 1 dimension con 128 threads disponibles
 [numthreads(128,1,1)]
@@ -37,14 +37,19 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
         dist = abs(distance(BoidsResult[id.x].Position, BoidsResult[i].Position));
 
-        if (dist >= 0 && dist < 1) {
+        if (dist >= 0 && dist < 3) {
             separationCount++;
             averageSeparation = averageSeparation + BoidsResult[id.x].Position - BoidsResult[i].Position;
         }
         
-        if (dist >= 1 && dist < 20) {
+        if (dist >= 3 && dist < 20) {
             cohesionCount++;
             averagePosition = averagePosition + BoidsResult[i].Position;
+        }
+
+        if (dist >= 0 && dist < 10) {
+            alignmentCount++;
+            averageVelocity = averageVelocity + BoidsResult[i].Velocity;
         }
     }
 
@@ -58,11 +63,15 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         averagePosition = averagePosition - BoidsResult[id.x].Position;
         normalize(averagePosition);
     }
+    if (alignmentCount > 0) {
+        averageVelocity = averageVelocity / alignmentCount;
+        normalize(averageVelocity);
+    }
 
     BoidsResult[id.x].Separation = averageSeparation;
     //BoidsResult[id.x].Separation = float3(0, 0, 0);
 
-    BoidsResult[id.x].Alignment = float3(0, 0, 0);
+    BoidsResult[id.x].Alignment = averageVelocity;
     //BoidsResult[id.x].Alignment = float3(0, 0, 0);
 
     BoidsResult[id.x].Cohesion = averagePosition;
