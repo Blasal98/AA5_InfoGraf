@@ -1,0 +1,80 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+
+struct GameObjInf {
+
+    float3 Position;
+    float3 Velocity;
+
+    float3 Separation;
+    float3 Alignment;
+    float3 Cohesion;
+};
+
+RWStructuredBuffer<GameObjInf> BoidsResult;
+
+int boidCount;
+
+float dist = 0;
+
+int separationCount = 0;
+int cohesionCount = 0;
+int alignmentCount = 0;
+
+float3 averageSeparation = float3(0, 0, 0);
+float3 averagePosition = float3(0, 0, 0);
+float3 averageVelocity = float3(0, 0, 0);
+
+//los threadgroups seran de 1 dimension con 128 threads disponibles
+[numthreads(128,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    for (int i = 0; i < boidCount; i++) {
+
+        dist = abs(distance(BoidsResult[id.x].Position, BoidsResult[i].Position));
+
+        if (dist >= 0 && dist < 3) {
+            separationCount++;
+            averageSeparation = averageSeparation + BoidsResult[id.x].Position - BoidsResult[i].Position;
+        }
+        
+        if (dist >= 3 && dist < 50) {
+            cohesionCount++;
+            averagePosition = averagePosition + BoidsResult[i].Position;
+        }
+
+        if (dist >= 0 && dist < 10) {
+            alignmentCount++;
+            averageVelocity = averageVelocity + BoidsResult[i].Velocity;
+        }
+    }
+
+    if (separationCount > 0) {
+        averageSeparation = averageSeparation / separationCount;
+        normalize(averageSeparation);
+    }
+    if (cohesionCount > 0) {
+
+        averagePosition = averagePosition / cohesionCount;
+        averagePosition = averagePosition - BoidsResult[id.x].Position;
+        normalize(averagePosition);
+    }
+    if (alignmentCount > 0) {
+        averageVelocity = averageVelocity / alignmentCount;
+        normalize(averageVelocity);
+    }
+
+    BoidsResult[id.x].Separation = averageSeparation;
+    //BoidsResult[id.x].Separation = float3(0, 0, 0);
+
+    BoidsResult[id.x].Alignment = averageVelocity;
+    //BoidsResult[id.x].Alignment = float3(0, 0, 0);
+
+    BoidsResult[id.x].Cohesion = averagePosition;
+    //BoidsResult[id.x].Cohesion = float3(0, 0, 0);
+    
+}
