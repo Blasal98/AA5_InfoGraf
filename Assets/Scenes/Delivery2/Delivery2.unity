@@ -686,6 +686,7 @@ MonoBehaviour:
   humoPrefab: {fileID: 2700834282942487451, guid: 101bf500e3d76b64195a7fdf58d9339f,
     type: 3}
   humoCount: 100
+  humoMaxHeight: 10
   humoList: []
   shader: {fileID: 7200000, guid: b9d2cbd5f9c05554d9dec1fa0f9c7ae9, type: 3}
 --- !u!4 &117676327
@@ -2864,6 +2865,7 @@ GameObject:
   - component: {fileID: 836432382}
   - component: {fileID: 836432381}
   - component: {fileID: 836432386}
+  - component: {fileID: 836432383}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2887,6 +2889,20 @@ Behaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836432380}
   m_Enabled: 1
+--- !u!114 &836432383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836432380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a978be23630854b8d5b1dfaaa8fda4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 836432384}
+  pixelatedMat: {fileID: 2100000, guid: 06e2773fa95df03488372add0aa5c7d8, type: 2}
 --- !u!20 &836432384
 Camera:
   m_ObjectHideFlags: 0
