@@ -9,8 +9,6 @@ Shader "Unlit/PBR_Ult"
 		 _diffuseInt("Diffuse int", Range(0,1)) = 1
 		_scecularExp("Specular exponent",Float) = 2.0
 
-		_metallicness("MetallicParam", Range(0,1)) = 0.5
-		_smoothness("SmoothParam", Range(0,1)) = 0.5
 	}
 		SubShader
 		 {
@@ -66,12 +64,28 @@ Shader "Unlit/PBR_Ult"
 				 float _ambientInt;//How strong it is?
 				 half4 _ambientColor;
 				 float _diffuseInt;
-				 float _scecularExp;
+				 //float _scecularExp;
+				 float _fresnelIntensity;
+				 float _distributionRoughness;
 
-				 float _metallicness;
-				 float _smoothness;
 
-
+				 //BDRF
+				 float Fresnel(float3 lightVector, float3 halfVector) {
+					 return _fresnelIntensity + pow((1 - _fresnelIntensity) * (1 - dot(halfVector, lightVector)), 5);
+				 }
+				 float Distribution(float3 normalVector, float3 halfVector) {
+					 return pow(_distributionRoughness, 2) / (3.14159 * pow(pow(dot(normalVector, halfVector), 2) * (pow(_distributionRoughness, 2) - 1) + 1, 2));
+				 }
+				 float Geometry(float3 lightVector, float3 viewVector, float3 normalVector, float3 halfVector) {
+					 return dot(normalVector, lightVector) * dot(normalVector, viewVector) / max(dot(normalVector, lightVector), dot(normalVector, viewVector));
+				 }
+				 float BRDF(float3 lightVector, float3 viewVector, float3 normalVector, float3 halfVector) {
+					 return
+						 Fresnel(lightVector, halfVector) *
+						 Geometry(lightVector, viewVector, normalVector, halfVector) *
+						 Distribution(normalVector, halfVector) /
+						 (4 * dot(normalVector, lightVector) * dot(normalVector, viewVector));
+				 }
 
 				 half4 frag(v2f i) : SV_Target
 				 {
@@ -84,15 +98,6 @@ Shader "Unlit/PBR_Ult"
 					 float3 halfVec;
 					 float3 difuseComp = float4(0, 0, 0, 1);
 					 float3 specularComp = float4(0, 0, 0, 1);
-					 float fresnel;
-					 float aa;
-					 float dotV;
-					 float distribution;
-					 float dotNL;
-					 float dotNV;
-					 float dotVH;
-					 float geometry;
-					 float lightDist;
 
 	 #if SHADOWS_SCREEN
 					 half4 clipPos = TransformWorldToHClip(i.wPos);
@@ -119,22 +124,7 @@ Shader "Unlit/PBR_Ult"
 					 //blinnPhong
 					 halfVec = normalize(viewVec + Direction);
 
-					 //Fresnel formula
-					 fresnel = pow((_metallicness + (1.0 - _metallicness) * (1.0 - dot(Direction, i.worldNormal))), 5.0);
-
-					 //Distribution formula
-					 aa = _smoothness * _smoothness;
-					 dotV = dot(i.worldNormal, halfVec);
-					 dotV = dotV * dotV;
-					 distribution = aa / (3.141592f * pow(((dotV * (aa - 1.0f) + 1.0f)), 2.0f));
-
-					 //Geometry formula
-					 dotNL = dot(i.worldNormal, Direction);
-					 dotNV = dot(i.worldNormal, viewVec);
-					 dotVH = dot(viewVec, halfVec);
-					 dotVH = dotVH * dotVH;
-					 geometry = dotNL * dotNV / dotVH;
-					 specularComp = ((fresnel * distribution * geometry) / (4.0 * dot(i.worldNormal, Direction) * dot(i.worldNormal, viewVec)));
+					 specularComp = BRDF(Direction, viewVec, i.worldNormal, halfVec);
 
 					 //Sum
 					 finalColor += clamp(float4(DistanceAtten * (difuseComp + specularComp),1),0,1);

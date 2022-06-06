@@ -18,6 +18,6 @@ public class PixelatedCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        pixelatedMat.SetFloat("PixelSize", Mathf.Lerp(2000,10, Mathf.InverseLerp(0,20,Vector3.Distance(transform.position,originalPosition))));
+        pixelatedMat.SetFloat("PixelSize", Mathf.Lerp(2000,20, Mathf.InverseLerp(0,20,Vector3.Distance(transform.position,originalPosition))));
     }
 }
