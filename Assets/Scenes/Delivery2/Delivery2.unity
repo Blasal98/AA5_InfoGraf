@@ -318,7 +318,7 @@ MonoBehaviour:
   gaviotaList: []
   gaviotaVelocityList: []
   shader: {fileID: 7200000, guid: da455dfc203360846a8c3e245a674302, type: 3}
-  collisionWithMountain: 0
+  collisionWithMountain: 1
 --- !u!4 &39667458
 Transform:
   m_ObjectHideFlags: 0
@@ -2140,7 +2140,6 @@ Transform:
   - {fileID: 1306459652}
   - {fileID: 752609428}
   - {fileID: 1827716571}
-  - {fileID: 144830659}
   - {fileID: 827889290}
   m_Father: {fileID: 1264289567}
   m_RootOrder: 1
@@ -3031,7 +3030,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836432380}
   m_LocalRotation: {x: -0.23911776, y: 0.36964282, z: -0.09904551, w: -0.89239955}
-  m_LocalPosition: {x: 22.3, y: 24.67, z: -15.2}
+  m_LocalPosition: {x: 22.3, y: 22.5, z: -15.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
