@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rocas
+  m_Name: Shadow_Mat
   m_Shader: {fileID: 4800000, guid: 25c7683c6b48f1646a17f682e66c1ce8, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -44,9 +44,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: f83f36d00abbe724b9251ff98f68eec9, type: 3}
+        m_Scale: {x: -0.06, y: 1}
+        m_Offset: {x: 4.06, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -65,11 +65,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _objectColor:
         m_Texture: {fileID: 2800000, guid: f83f36d00abbe724b9251ff98f68eec9, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texture:
-        m_Texture: {fileID: 2800000, guid: f83f36d00abbe724b9251ff98f68eec9, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 7c025e9a7b900a345a90394c72ea1fe0, type: 3}
+        m_Scale: {x: 1.83, y: 2.26}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
@@ -89,7 +89,9 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _ColorMask: 15
     - _Cull: 2
+    - _Culling: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -100,39 +102,46 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _Offset: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
+    - _ReadMask: 246.8
     - _ReceiveShadows: 1
-    - _Roughness: 0.742
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 8.05
+    - _StencilComp: 0
+    - _StencilFail: 0
+    - _StencilOp: 3
+    - _StencilZFail: 1
     - _Surface: 0
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _WriteMask: -2716.4
+    - _ZTest: 0
+    - _ZWrite: 0
     - _ambientInt: 1
-    - _diffuseInt: 1
-    - _directionalLightIntensity: 0.75
+    - _diffuseInt: 0.144
+    - _directionalLightIntensity: 1
     - _distributionRoughness: 0.0001
     - _fresnelIntensity: 1
-    - _metallicSample: 0.1
     - _metallicness: 0.5
     - _pointLightIntensity: 1
     - _scecularExp: 2
-    - _smoothness: 0.5
+    - _smoothness: 0.377
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _ambientColor: {r: 0.3584906, g: 0.3297437, b: 0.3297437, a: 1}
-    - _directionalLightColor: {r: 1, g: 1, b: 1, a: 0}
-    - _directionalLightDir: {r: -44, g: 22, b: -38, a: 0}
+    - _ambientColor: {r: 1, g: 1, b: 1, a: 1}
+    - _directionalLightColor: {r: 0, g: 0, b: 0, a: 1}
+    - _directionalLightDir: {r: 0, g: 1, b: 0, a: 1}
     - _pointLightColor: {r: 0, g: 0, b: 0, a: 1}
     - _pointLightPos: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5498600953468456582
+--- !u!114 &4766310077905426809
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
